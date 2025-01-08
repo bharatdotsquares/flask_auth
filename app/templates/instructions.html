@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block title %}Routes{% endblock %}
+
+{% block body %}
+<h1>Routes</h1>
+<ul>
+        <li>
+            method : Post <span  class="text-danger">/Login/</span>
+            body: {
+                "username": "example",
+                "password": "example"
+            }
+        </li>
+
+
+
+        <li>
+            method : Post <span  class="text-danger">/register/</span>
+            body : {
+                "username": "example",
+                "password": "example",
+                "email": "example@example.com",
+                "profile_pic": file
+            }
+        </li>
+
+
+
+        <li>
+            method : GET <span  class="text-danger">/user/</span>
+            header Authorization: Bearer {token}
+        </li>
+
+
+        <li>
+            method : GET <span  class="text-danger">/users/</span>
+            header Authorization:  Bearer {token}
+        </li>
+    </ul>
+{% endblock %}
