@@ -18,6 +18,6 @@ def register_route():
 def user_route(data):
     return user(data)
 @app.route('/users',methods=['GET'])
-@token_required #wrap function by functools for authenticating token
+@token_required #wrap function by functools for providing token
 def users_route(data):
     return users(data)

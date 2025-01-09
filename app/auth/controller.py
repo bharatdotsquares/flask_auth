@@ -2,7 +2,7 @@ import os
 from flask import request,jsonify,render_template
 from app import app
 from app.auth.models import User,db
-from app.auth.const import HttpStatus
+from app.utils.const import HttpStatus
 from app.utils.res import res
 
 
@@ -25,7 +25,7 @@ def login():
             return res(False, "Invalid username or password.", None,HttpStatus.BAD_REQUEST)
 
         token = user.generate_token()
-        return res(True,"User Loggedin successfully",{"token": token},HttpStatus.OK)
+        return res(True,"User Loggedin successfully",{"token": token,"user":user.toJSON()},HttpStatus.OK)
         
     except Exception as error:
         return res(False,"server error", None,HttpStatus.SERVER_ERROR)
@@ -35,12 +35,13 @@ def register():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
-        file = request.files.get('profile_pic')
-        
+        file = request.files.get('profile_pic')     
+         
         isExist = User.isExist(username=username, email=email)
         if isExist:
             return res(False, "Username or email already exists.", None,HttpStatus.BAD_REQUEST)
-        file.save(app.config['STATIC_FOLDER'] + file.filename)
+        if file:
+            file.save(app.config['STATIC_FOLDER'] + file.filename)
         new_upload = User(username=username,email=email,password=password, filename=file.filename)
         db.session.add(new_upload)
         db.session.commit()
